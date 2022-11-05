@@ -21,8 +21,9 @@ object LoadFromHDFS {
       .option("mode", "DROPMALFORMED")
       .load(hdfsHost)
 
+    df.show(10)
+
     println(s"FINISH ${"!"*50}")
-    println(df)
 
 
   }
