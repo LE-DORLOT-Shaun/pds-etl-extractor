@@ -4,7 +4,7 @@ import org.apache.spark.sql.SparkSession
 
 object LoadFromHDFS {
 
-  val hdfsHost: String = "HDFS://172.31.252.100:9000/bronze/titanic.csv"
+  val hdfsHost: String = "HDFS://192.168.1.2:9000/bronze/titanic.csv"
   val sparkHost: String = "local"
 
   def loadFromHDFS: Unit = {
