@@ -31,7 +31,7 @@ object LoadFromHDFS {
 
     // Save data to hive
     df.createOrReplaceTempView("titanicTable")
-    sparkSession.sql("create table titanic_table as select * from titanicTable")
+    sparkSession.sql("create table titanic.titanic_table as select * from titanicTable")
 
     // log something :)
     println(s"${"!"*25} FINISH ${"!"*25}")
