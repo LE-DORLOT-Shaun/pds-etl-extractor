@@ -1,4 +1,4 @@
-import workers.LoadFromHDFS
+import sparkjobs.proto.LoadFromHDFS
 
 object Main {
   def main(args: Array[String]): Unit = {
