@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   "com.github.tototoshi" %% "scala-csv" % "1.3.10",
   // spark
   "org.apache.spark" %% "spark-core" % "3.2.2",
-  "org.apache.spark" %% "spark-sql" % "3.2.2"
+  "org.apache.spark" %% "spark-sql" % "3.2.2",
+  "org.apache.spark" %% "spark-hive" % "3.2.2"
 )
