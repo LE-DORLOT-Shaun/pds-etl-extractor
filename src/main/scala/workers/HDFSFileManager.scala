@@ -19,7 +19,7 @@ object HDFSFileManager {
     .enableHiveSupport()
     .getOrCreate()
 
-  def readCSVFromHDFS(path: String): Try[DataFrame] = {
+  def readParquetFromFile(path: String): Try[DataFrame] = {
     // Log
     println(s"\n${"-" * 25} READING FILE STARTED ${"-" * 25}")
     println(s"reading from ${path}")
