@@ -1,9 +1,8 @@
 package executors
 
-import org.apache.spark
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.DataFrame
 import workers.DataExtractor.getFileFromURL
-import workers.HDFSFileManager.{readCSVFromHDFS, sparkSession}
+import workers.HDFSFileManager.readCSVFromHDFS
 
 import scala.util.{Failure, Success}
 
