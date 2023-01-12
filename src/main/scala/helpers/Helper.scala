@@ -20,7 +20,7 @@ object Helper {
     )
 
     // Load JSON From file
-    val source = scala.io.Source.fromFile("src/config/DataFileConfig.json")
+    val source = scala.io.Source.fromFile("src/confs/DataFileConfig.json")
     val lines = try source.mkString finally source.close()
     val json = lines.parseJson
 
