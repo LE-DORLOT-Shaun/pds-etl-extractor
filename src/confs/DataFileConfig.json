@@ -1,23 +1,23 @@
 {
   "columns" : [
     {
-      "name": "VendorId",
+      "name": "RoomId",
       "typeOf": "Long"
     },
     {
-      "name": "tpep_pickup_datetime",
+      "name": "start_time",
       "typeOf": "String"
     },
     {
-      "name": "tpep_dropoff_datetime",
+      "name": "end_time",
       "typeOf": "String"
     },
     {
-      "name": "passenger_count",
+      "name": "nb_persons",
       "typeOf": "Int"
     },
     {
-      "name": "trip_distance",
+      "name": "mult_factor",
       "typeOf": "Int"
     }
   ]

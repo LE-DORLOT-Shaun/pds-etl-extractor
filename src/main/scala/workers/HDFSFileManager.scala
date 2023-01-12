@@ -1,6 +1,7 @@
 package workers
 
 import helpers.Helper
+import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, Dataset, SaveMode, SparkSession}
 
 import scala.util.{Failure, Success, Try}
@@ -41,10 +42,18 @@ object HDFSFileManager {
       if(!hasWritten) Failure(new Throwable("cannot save raw data file"))
       println("Raw Data File Has Been Successfully Written")
 
-      val df_bronze = sparkSession.read
-        .schema(Helper.sparkSchemeFromJSON())
-        .option("mode", "DROPMALFORMED")
-        .parquet(path)
+      val df_bronze = df_raw
+        // Delete unuseful columns
+        .drop("RatecodeID", "store_and_fwd_flag", "PULocationID",
+            "DOLocationID", "payment_type", "fare_amount", "extra", "mta_tax", "tip_amount",
+            "tolls_amount", "improvement_surcharge", "total_amount", "congestion_surcharge",
+            "airport_fee")
+        // Rename columns names
+        .withColumn("VendorID" , col("RoomId"))
+        .withColumn("tpep_pickup_datetime" , col("start_time"))
+        .withColumn("tpep_dropoff_datetime" , col("end_time"))
+        .withColumn("passenger_count" , col("nb_persons"))
+        .withColumn("trip_distance" , col("mult_factor"))
 
       df_bronze.show(20)
 
