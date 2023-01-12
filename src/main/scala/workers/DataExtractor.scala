@@ -1,10 +1,15 @@
 package workers
 
+import sys.process._
+import java.net.URL
+import java.io.File
+import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
 object DataExtractor {
 
   def getFileFromURL(url : String): Try[String] = {
+
     try {
       val arr = url.split('/')
       val temp_path = s"/tmp/${
@@ -13,10 +18,7 @@ object DataExtractor {
         }
       }"
 
-      val src = scala.io.Source.fromURL(url)
-      val out = new java.io.FileWriter(temp_path)
-      out.write(src.mkString)
-      out.close()
+      new URL(url) #> new File(temp_path) !!
       Success(temp_path)
 
     } catch {
