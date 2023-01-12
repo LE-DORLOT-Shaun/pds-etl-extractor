@@ -17,6 +17,6 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-hive" % "3.2.2",
   // Spray JSON
   "io.spray" %% "spray-json" % "1.3.6",
-  // Akka HTTP
-
+  // Scalaj HTTP
+  "org.scalaj" % "scalaj-http_2.11" % "2.4.2"
 )

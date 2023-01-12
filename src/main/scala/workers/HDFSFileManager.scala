@@ -15,14 +15,14 @@ object HDFSFileManager {
   val sparkSession: SparkSession = SparkSession
     .builder
     .master(sparkHost)
-    .appName("compliance-system")
+    .appName("pds-etl-manager")
     .enableHiveSupport()
     .getOrCreate()
 
-  def readCSVFromHDFS(hdfsPath: String, fileType : String): Try[DataFrame] = {
+  def readCSVFromHDFS(path: String): Try[DataFrame] = {
     // Log
     println(s"\n${"-" * 25} READING FILE STARTED ${"-" * 25}")
-    println(s"reading from ${hdfsPath}")
+    println(s"reading from ${path}")
 
     // Spark-session context
     sparkSession.sparkContext.setCheckpointDir("tmp")
@@ -31,19 +31,19 @@ object HDFSFileManager {
     // Load data from HDFS
     try{
       val df = sparkSession.read
-        .schema(Helper.sparkSchemeFromJSON())
-        .format(fileType)
-        .option("header", "true")
-        .option("mode", "DROPMALFORMED")
-        .load(hdfsPath)
+        //.schema(Helper.sparkSchemeFromJSON())
+        //.format(fileType)
+        //.option("header", "true")
+        //.option("mode", "DROPMALFORMED")
+        .load(path)
       Success(df)
     } catch {
       case _: Throwable =>
-        Failure(new Throwable("cannot read file from HDFS"))
+        Failure(new Throwable("cannot read file from file"))
     }
   }
 
-  def writeCSVToHDFS(hdfsPath: String, fileType : String, ds : Dataset[None]): Boolean = {
+  def writeCSVToHDFS(hdfsPath: String, fileType : String, ds : Dataset[String]): Boolean = {
     println(s"${"-" * 25} SAVING FILE STARTED ${"-" * 25}")
 
     sparkSession.sparkContext.setLogLevel("ERROR")
