@@ -1,8 +1,8 @@
 package workers
 
-import sys.process._
 import java.net.URL
 import java.io.File
+import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
 object DataExtractor {
@@ -17,11 +17,18 @@ object DataExtractor {
         }
       }"
 
-      new URL(url) #> new File(temp_path)
+      fileDownloader(url, temp_path)
       Success(temp_path)
 
     } catch {
       case e: java.io.IOException => Failure(new Throwable(s"error occurred: ${e.getMessage}"))
     }
   }
+
+  def fileDownloader(url: String, filename: String) = {
+    import sys.process._
+    new URL(url) #> new File(filename) !!
+  }
 }
+
+
