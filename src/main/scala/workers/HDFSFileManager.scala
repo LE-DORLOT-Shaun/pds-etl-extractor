@@ -10,6 +10,8 @@ import scala.util.{Failure, Success, Try}
  */
 object HDFSFileManager {
   val sparkHost : String = "local"
+  val hdfsRawPath : String = "hdfs://192.168.1.2:9000/raw/locaux"
+  val hdfsBronzePath : String = "hdfs://192.168.1.2:9000/bronze/locaux"
 
   // Spark Session
   val sparkSession: SparkSession = SparkSession
@@ -19,7 +21,7 @@ object HDFSFileManager {
     .enableHiveSupport()
     .getOrCreate()
 
-  def readParquetFromFile(path: String): Try[DataFrame] = {
+  def getAndSaveParquetToHDFS(path: String): Try[DataFrame] = {
     // Log
     println(s"\n${"-" * 25} READING FILE STARTED ${"-" * 25}")
     println(s"reading from ${path}")
@@ -30,33 +32,41 @@ object HDFSFileManager {
 
     // Load data from HDFS
     try{
-      val df = sparkSession.read
-        //.schema(Helper.sparkSchemeFromJSON())
-        //.format(fileType)
-        //.option("header", "true")
-        //.option("mode", "DROPMALFORMED")
-        .load(path)
-      Success(df)
+      val df_raw = sparkSession.read.parquet(path)
+
+      df_raw.show(20)
+
+      var hasWritten : Boolean = writeParquetToHDFS(hdfsRawPath, df_raw)
+
+      if(!hasWritten) Failure(new Throwable("cannot save raw data file"))
+
+      val df_bronze = sparkSession.read
+        .schema(Helper.sparkSchemeFromJSON())
+        .option("mode", "DROPMALFORMED")
+        .parquet(path)
+
+      hasWritten = writeParquetToHDFS(hdfsBronzePath, df_bronze)
+
+      if (!hasWritten) Failure(new Throwable("cannot save bronze data file"))
+
+      Success(df_bronze)
     } catch {
       case _: Throwable =>
         Failure(new Throwable("cannot read file from file"))
     }
   }
 
-  def writeCSVToHDFS(hdfsPath: String, fileType : String, ds : Dataset[String]): Boolean = {
+  def writeParquetToHDFS(hdfsPath: String, df : DataFrame): Boolean = {
     println(s"${"-" * 25} SAVING FILE STARTED ${"-" * 25}")
 
     sparkSession.sparkContext.setLogLevel("ERROR")
 
     try {
       // Write to final
-      ds.checkpoint(true)
+      df.checkpoint(true)
         .write
-        .format(fileType)
-        .option("header", "true")
         .mode(SaveMode.Overwrite)
         .save(hdfsPath)
-
       true
     }
     catch {
@@ -64,9 +74,5 @@ object HDFSFileManager {
         println("error while saving data")
         false
     }
-  }
-
-  def getSparkSession : SparkSession = {
-    sparkSession
   }
 }

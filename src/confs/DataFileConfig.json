@@ -1,28 +1,24 @@
 {
   "columns" : [
     {
-      "name": "id",
+      "name": "VendorId",
       "typeOf": "Long"
     },
     {
-      "name": "start_time",
+      "name": "tpep_pickup_datetime",
       "typeOf": "String"
     },
     {
-      "name": "end_time",
+      "name": "tpep_dropoff_datetime",
       "typeOf": "String"
     },
     {
-      "name": "nb_attends",
-      "typeOf": "Long"
+      "name": "passenger_count",
+      "typeOf": "Int"
     },
     {
-      "name": "duration",
-      "typeOf": "Long"
-    },
-    {
-      "name": "idRoom",
-      "typeOf": "Long"
+      "name": "trip_distance",
+      "typeOf": "Int"
     }
   ]
 }
