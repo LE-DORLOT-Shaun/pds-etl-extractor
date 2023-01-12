@@ -39,6 +39,7 @@ object HDFSFileManager {
       var hasWritten : Boolean = writeParquetToHDFS(hdfsRawPath, df_raw)
 
       if(!hasWritten) Failure(new Throwable("cannot save raw data file"))
+      println("Raw Data File Has Been Successfully Written")
 
       val df_bronze = sparkSession.read
         .schema(Helper.sparkSchemeFromJSON())
@@ -48,11 +49,12 @@ object HDFSFileManager {
       hasWritten = writeParquetToHDFS(hdfsBronzePath, df_bronze)
 
       if (!hasWritten) Failure(new Throwable("cannot save bronze data file"))
+      println("Bronze Data File Has Been Successfully Written")
 
       Success(df_bronze)
     } catch {
-      case _: Throwable =>
-        Failure(new Throwable("cannot read file from file"))
+      case e: Throwable =>
+        Failure(new Throwable(s"cannot read/save file: ${e.getMessage}"))
     }
   }
 
