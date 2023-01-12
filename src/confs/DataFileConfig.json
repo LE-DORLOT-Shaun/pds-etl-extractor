@@ -1,0 +1,28 @@
+{
+  "columns" : [
+    {
+      "name": "id",
+      "typeOf": "Long"
+    },
+    {
+      "name": "start_time",
+      "typeOf": "String"
+    },
+    {
+      "name": "end_time",
+      "typeOf": "String"
+    },
+    {
+      "name": "nb_attends",
+      "typeOf": "Long"
+    },
+    {
+      "name": "duration",
+      "typeOf": "Long"
+    },
+    {
+      "name": "idRoom",
+      "typeOf": "Long"
+    }
+  ]
+}
