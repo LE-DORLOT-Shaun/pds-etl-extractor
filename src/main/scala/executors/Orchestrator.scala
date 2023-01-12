@@ -14,7 +14,7 @@ object Orchestrator {
     getFileFromURL(s"https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_${year}-${month}.parquet") match {
       case Success(path: String) => {
         println("file downloaded successfully")
-        readParquetFromFile(s"https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_${year}-${month}.parquet") match {
+        readParquetFromFile(path) match {
           case Success(df: DataFrame) => {
             df.show(10)
           }
