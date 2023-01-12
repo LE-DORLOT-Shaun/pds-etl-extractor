@@ -46,6 +46,8 @@ object HDFSFileManager {
         .option("mode", "DROPMALFORMED")
         .parquet(path)
 
+      df_bronze.show(20)
+
       hasWritten = writeParquetToHDFS(hdfsBronzePath, df_bronze)
 
       if (!hasWritten) Failure(new Throwable("cannot save bronze data file"))
