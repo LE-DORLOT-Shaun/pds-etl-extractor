@@ -14,5 +14,9 @@ libraryDependencies ++= Seq(
   // spark
   "org.apache.spark" %% "spark-core" % "3.2.2",
   "org.apache.spark" %% "spark-sql" % "3.2.2",
-  "org.apache.spark" %% "spark-hive" % "3.2.2"
+  "org.apache.spark" %% "spark-hive" % "3.2.2",
+  // Spray JSON
+  "io.spray" %% "spray-json" % "1.3.6",
+  // Akka HTTP
+
 )
