@@ -3,7 +3,6 @@ package workers
 import sys.process._
 import java.net.URL
 import java.io.File
-import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
 object DataExtractor {
@@ -18,7 +17,7 @@ object DataExtractor {
         }
       }"
 
-      new URL(url) #> new File(temp_path) !!
+      new URL(url) #> new File(temp_path)
       Success(temp_path)
 
     } catch {
