@@ -72,8 +72,8 @@ object HDFSFileManager {
       true
     }
     catch {
-      case _: Throwable =>
-        println("error while saving data")
+      case e: Throwable =>
+        println(s"error while saving data: ${e.getMessage}")
         false
     }
   }
