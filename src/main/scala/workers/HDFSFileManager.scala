@@ -49,11 +49,11 @@ object HDFSFileManager {
             "tolls_amount", "improvement_surcharge", "total_amount", "congestion_surcharge",
             "airport_fee")
         // Rename columns names
-        .withColumn("VendorID" , col("RoomId"))
-        .withColumn("tpep_pickup_datetime" , col("start_time"))
-        .withColumn("tpep_dropoff_datetime" , col("end_time"))
-        .withColumn("passenger_count" , col("nb_persons"))
-        .withColumn("trip_distance" , col("mult_factor"))
+        .withColumnRenamed("VendorID" , "RoomId")
+        .withColumnRenamed("tpep_pickup_datetime" , "start_time")
+        .withColumnRenamed("tpep_dropoff_datetime" , "end_time")
+        .withColumnRenamed("passenger_count" , "nb_persons")
+        .withColumnRenamed("trip_distance" , "mult_factor")
 
       df_bronze.show(20)
 
