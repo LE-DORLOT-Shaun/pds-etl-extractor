@@ -3,11 +3,6 @@ package workers
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
-import java.sql.Date
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-
 object DataTransformer {
   val sparkHost : String = "local"
   val hdfsSilverPath : String = "hdfs://192.168.1.2:9000/silver/locaux"
@@ -38,7 +33,7 @@ object DataTransformer {
       }
       val nb_persons = row.getDouble(3) * row.getDouble(4)
 
-      (roomId, start_date, end_date, nb_persons)
+      (roomId, start_date, end_date, nb_persons.toInt)
     })
 
     val df_cleaned = ds.toDF("RoomId", "start_date", "end_date", "nb_persons")
@@ -51,7 +46,7 @@ object DataTransformer {
       // Write to final
       df_cleaned.checkpoint(true)
         .write
-        .mode(SaveMode.Overwrite)
+        .mode(SaveMode.Append)
         .save(hdfsSilverPath)
 
       println("Silver Data File Has Been Successfully Written")
