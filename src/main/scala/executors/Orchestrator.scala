@@ -2,6 +2,7 @@ package executors
 
 import org.apache.spark.sql.DataFrame
 import workers.DataExtractor.getFileFromURL
+import workers.DataTransformer.transformDataSilver
 import workers.HDFSFileManager.getAndSaveParquetToHDFS
 
 import java.io.File
@@ -17,10 +18,13 @@ object Orchestrator {
         println("file downloaded successfully")
         getAndSaveParquetToHDFS(path) match {
           case Success(df: DataFrame) => {
-            df.show(20)
-
             // Delete Temp File
             new File(path).delete()
+
+            // Bronze to Silver
+            val hasTransformed = transformDataSilver(df)
+            if(!hasTransformed) println("error")
+            else println("data transformation success!")
           }
           case Failure(exception) => {
             println(exception)
