@@ -40,6 +40,8 @@ object DataTransformer {
 
   def transformTime(datetime : String) : String = {
     val date_time = datetime.split(' ')
+    println(datetime)
+    println(date_time)
     // Dates
     val date = date_time(0)
     val time = date_time(1)
