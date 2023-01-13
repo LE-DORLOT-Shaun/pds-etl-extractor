@@ -18,13 +18,13 @@ object Orchestrator {
         println("file downloaded successfully")
         getAndSaveParquetToHDFS(path) match {
           case Success(df: DataFrame) => {
-            // Delete Temp File
-            new File(path).delete()
-
             // Bronze to Silver
             val hasTransformed = transformDataSilver(df)
             if(!hasTransformed) println("error")
             else println("data transformation success!")
+
+            // Delete Temp File
+            new File(path).delete()
           }
           case Failure(exception) => {
             println(exception)
