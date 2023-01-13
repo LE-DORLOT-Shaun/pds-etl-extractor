@@ -22,8 +22,8 @@ object DataTransformer {
       .getOrCreate()
 
     val df_str = df
-      .withColumn("start_date", col("start_date").cast("String"))
-      .withColumn("end_date", col("end_date").cast("String"))
+      .withColumn("start_time", col("start_time").cast("String"))
+      .withColumn("end_time", col("end_time").cast("String"))
 
     import sparkSession.implicits._
     val ds = df_str.map(row => {
