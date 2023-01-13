@@ -1,10 +1,6 @@
 package workers
 
-import org.apache.parquet.format.Util
-import org.apache.spark.sql.functions.col
-import org.apache.spark.sql.types.{LongType, StringType, StructType}
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode, SparkSession}
-import workers.HDFSFileManager.getSparkSession
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
 
 object DataTransformer {
@@ -31,7 +27,7 @@ object DataTransformer {
       }
       val nb_persons = row.getLong(3) * row.getLong(4)
 
-      (roomId, start_date, end_date, nb_persons.toInt)
+      (roomId, start_date, end_date, nb_persons)
     })
 
     val df_cleaned = ds.toDF("RoomId", "start_date", "end_date", "nb_persons")
@@ -65,9 +61,9 @@ object DataTransformer {
     val time = date_time(1)
     // Time
     val time_arr = time.split(':')
-    var hour = time_arr(0).toInt
-    val minutes = time_arr(1).toInt
-    val seconds = time_arr(2).toInt
+    var hour = time_arr(0).toLong
+    val minutes = time_arr(1).toLong
+    val seconds = time_arr(2).toLong
 
     // Transformation
     if(hour < 7) {
