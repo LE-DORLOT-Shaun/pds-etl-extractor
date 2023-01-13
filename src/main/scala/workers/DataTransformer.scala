@@ -55,15 +55,22 @@ object DataTransformer {
   }
 
   def transformTime(datetime : String) : String = {
+    println("Transformation time")
     val date_time = datetime.split(' ')
     // Dates
     val date = date_time(0)
+    println(s"Transformation time : date ${date}")
     val time = date_time(1)
+    println(s"Transformation time : time ${time}")
+
     // Time
     val time_arr = time.split(':')
     var hour = time_arr(0).toLong
+    println(s"Transformation time : hour ${hour}")
     val minutes = time_arr(1).toLong
+    println(s"Transformation time : time ${minutes}")
     val seconds = time_arr(2).toLong
+    println(s"Transformation time : time ${seconds}")
 
     // Transformation
     if(hour < 7) {

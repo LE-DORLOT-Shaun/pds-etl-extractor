@@ -78,7 +78,7 @@ object HDFSFileManager {
       // Write to final
       df.checkpoint(true)
         .write
-        .mode(SaveMode.Overwrite)
+        .mode(SaveMode.Append)
         .save(hdfsPath)
       true
     }
