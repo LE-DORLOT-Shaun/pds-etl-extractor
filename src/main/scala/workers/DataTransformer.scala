@@ -2,6 +2,8 @@ package workers
 
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
+import java.sql.Date
+
 
 object DataTransformer {
   val sparkHost : String = "local"
@@ -19,8 +21,14 @@ object DataTransformer {
     import sparkSession.implicits._
     val ds = df.map(row => {
       val roomId = row.getLong(0)
-      val start_date = transformTime(row.getTimestamp(1).toString)
-      var end_date = row.getTimestamp(2).toString
+
+      val start_sec = row.getTimestamp(1).getTime
+      val sdate = new java.sql.Date(start_sec)
+      val start_date = transformTime(sdate.toString)
+
+      val end_sec = row.getTimestamp(2).getTime
+      val edate = new java.sql.Date(end_sec)
+      var end_date = edate.toString
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
