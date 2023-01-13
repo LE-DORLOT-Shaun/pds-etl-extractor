@@ -41,13 +41,13 @@ object DataTransformer {
   def transformTime(datetime : String) : String = {
     val date_time = datetime.split(' ')
     // Dates
-    val date = date_time[0].toString()
-    val time = date_time[1].toString()
+    val date = date_time(0)
+    val time = date_time(1)
     // Time
     val time_arr = time.split(':')
-    var hour = time_arr[0].toString().toInt
-    val minutes = time_arr[1].toString().toInt
-    val seconds = time_arr[2].toString().toInt
+    var hour = time_arr(0).toInt
+    val minutes = time_arr(1).toInt
+    val seconds = time_arr(2).toInt
 
     // Transformation
     if(hour < 7) {
