@@ -33,7 +33,7 @@ object DataTransformer {
       }
       val nb_persons = row.getDouble(3) * row.getDouble(4)
 
-      (roomId, start_date, end_date, nb_persons.toInt)
+      (roomId, start_date, end_date, nb_persons.toInt + 3)
     })
 
     val df_cleaned = ds.toDF("RoomId", "start_date", "end_date", "nb_persons")
