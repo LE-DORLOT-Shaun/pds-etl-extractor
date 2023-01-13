@@ -29,21 +29,14 @@ object DataTransformer {
     val ds = df_str.map(row => {
       val roomId = row.getLong(0)
 
-      //val start_sec = row.getTimestamp(1).getTime
-      //val sdate = new java.sql.Date(start_sec)
       val start_date = transformTime(row.getString(1))
 
-//      val end_sec = row.getTimestamp(2).getTime
-//      val edate = new java.sql.Date(end_sec)
       var end_date = row.getString(2)
-
-      //LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMdd HHmmss"))
-
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
       }
-      val nb_persons = row.getLong(3) * row.getLong(4)
+      val nb_persons = row.getDouble(3) * row.getDouble(4)
 
       (roomId, start_date, end_date, nb_persons)
     })
