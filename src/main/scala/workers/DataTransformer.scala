@@ -22,13 +22,13 @@ object DataTransformer {
     val ds = df.map(row => {
       val roomId = row.getLong(0)
 
-      val start_sec = row.getTimestamp(1).getTime
-      val sdate = new java.sql.Date(start_sec)
-      val start_date = transformTime(sdate.toString)
+      //val start_sec = row.getTimestamp(1).getTime
+      //val sdate = new java.sql.Date(start_sec)
+      val start_date = transformTime(row.getString(1))
 
-      val end_sec = row.getTimestamp(2).getTime
-      val edate = new java.sql.Date(end_sec)
-      var end_date = edate.toString
+//      val end_sec = row.getTimestamp(2).getTime
+//      val edate = new java.sql.Date(end_sec)
+      var end_date = row.getString(2)
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
@@ -63,7 +63,7 @@ object DataTransformer {
   }
 
   def transformTime(datetime : String) : String = {
-    println("Transformation time")
+    println(s"Transformation time ${datetime}")
     val date_time = datetime.split(' ')
     // Dates
     val date = date_time(0)
