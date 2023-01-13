@@ -41,28 +41,7 @@ object HDFSFileManager {
 
       if(!hasWritten) Failure(new Throwable("cannot save raw data file"))
       println("Raw Data File Has Been Successfully Written")
-
-      val df_bronze = df_raw
-        // Delete unuseful columns
-        .drop("RatecodeID", "store_and_fwd_flag", "PULocationID",
-            "DOLocationID", "payment_type", "fare_amount", "extra", "mta_tax", "tip_amount",
-            "tolls_amount", "improvement_surcharge", "total_amount", "congestion_surcharge",
-            "airport_fee")
-        // Rename columns names
-        .withColumnRenamed("VendorID" , "RoomId")
-        .withColumnRenamed("tpep_pickup_datetime" , "start_time")
-        .withColumnRenamed("tpep_dropoff_datetime" , "end_time")
-        .withColumnRenamed("passenger_count" , "nb_persons")
-        .withColumnRenamed("trip_distance" , "mult_factor")
-
-      df_bronze.show(20)
-
-      hasWritten = writeParquetToHDFS(hdfsBronzePath, df_bronze)
-
-      if (!hasWritten) Failure(new Throwable("cannot save bronze data file"))
-      println("Bronze Data File Has Been Successfully Written")
-
-      Success(df_bronze)
+      Success(df_raw)
     } catch {
       case e: Throwable =>
         Failure(new Throwable(s"cannot read/save file: ${e.getMessage}"))
@@ -87,9 +66,5 @@ object HDFSFileManager {
         println(s"error while saving data: ${e.getMessage}")
         false
     }
-  }
-
-  def getSparkSession: SparkSession = {
-    sparkSession
   }
 }
