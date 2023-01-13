@@ -22,16 +22,16 @@ object DataTransformer {
 
     import sparkSession.implicits._
     val ds = df.map(row => {
-      val roomId = row.getInt(0)
+      val roomId = row.getLong(0)
       val start_date = transformTime(row.getString(1))
       var end_date = row.getString(2)
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
       }
-      val nb_persons = row.getInt(3) * row.getInt(4)
+      val nb_persons = row.getLong(3) * row.getLong(4)
 
-      (roomId, start_date, end_date, nb_persons)
+      (roomId, start_date, end_date, nb_persons.toInt)
     })
 
     val df_cleaned = ds.toDF("RoomId", "start_date", "end_date", "nb_persons")
@@ -60,8 +60,6 @@ object DataTransformer {
 
   def transformTime(datetime : String) : String = {
     val date_time = datetime.split(' ')
-    println(datetime)
-    println(date_time)
     // Dates
     val date = date_time(0)
     val time = date_time(1)
