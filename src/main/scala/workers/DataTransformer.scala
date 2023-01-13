@@ -23,8 +23,8 @@ object DataTransformer {
     import sparkSession.implicits._
     val ds = df.map(row => {
       val roomId = row.getLong(0)
-      val start_date = transformTime(row.getString(1))
-      var end_date = row.getString(2)
+      val start_date = transformTime(row.getTimestamp(1).toString)
+      var end_date = row.getTimestamp(2).toString
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
