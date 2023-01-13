@@ -8,12 +8,17 @@ import workers.HDFSFileManager.getSparkSession
 
 
 object DataTransformer {
-
+  val sparkHost : String = "local"
   val hdfsSilverPath : String = "hdfs://192.168.1.2:9000/silver/locaux"
 
   def transformDataSilver(df : DataFrame): Boolean = {
 
-    val sparkSession : SparkSession = getSparkSession
+    val sparkSession: SparkSession = SparkSession
+      .builder
+      .master(sparkHost)
+      .appName("pds-etl-manager")
+      .enableHiveSupport()
+      .getOrCreate()
 
     import sparkSession.implicits._
     val ds = df.map(row => {
