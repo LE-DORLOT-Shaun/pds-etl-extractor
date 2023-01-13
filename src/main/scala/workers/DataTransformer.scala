@@ -69,7 +69,7 @@ object DataTransformer {
     println(s"Transformation time : hour ${hour}")
     val minutes = time_arr(1).toLong
     println(s"Transformation time : time ${minutes}")
-    val seconds = time_arr(2).toLong
+    val seconds = time_arr(2)
     println(s"Transformation time : time ${seconds}")
 
     // Transformation
