@@ -1,11 +1,47 @@
 package helpers
 
-import configs.{ConfigElement, DataFileConfig}
+import configs.{ArgConfig, Command, ConfigElement, DataFileConfig}
 import org.apache.spark.sql.{DataFrame, Dataset}
 import org.apache.spark.sql.types.{BooleanType, DataType, DateType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import scopt.{OParser, OParserBuilder}
 import spray.json._
 
+import scala.util.{Failure, Success, Try}
+
 object Helper {
+
+  // Scopt Parser
+  val builder: OParserBuilder[ArgConfig] = OParser.builder[ArgConfig]
+
+  val parser: OParser[Unit, ArgConfig] = {
+    import builder._
+    OParser.sequence(
+      programName("compliance-system"),
+      head("compliance-system", "1.0"),
+      opt[String]('y', "year")
+        .valueName("<year>")
+        .action((x, c) => c.copy(year = x))
+        .text("year is required if not read"),
+
+      opt[String]('m', "month")
+        .valueName("<month>")
+        .action((x, c) => c.copy(month = x))
+        .text("month is required if not read")
+    )
+  }
+
+  def parseCommand(args: Array[String]): Try[Command] = {
+    val command = new Command()
+
+    OParser.parse(parser, args, ArgConfig()) match {
+      case Some(config) =>
+        command.setYear(config.year)
+        command.setMonth(config.month)
+        Success(command)
+      case _ =>
+        Failure(new Throwable("program args invalid"))
+    }
+  }
 
   def sparkSchemeFromJSON(): StructType = {
     // Basic type mapping map

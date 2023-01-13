@@ -18,5 +18,7 @@ libraryDependencies ++= Seq(
   // Spray JSON
   "io.spray" %% "spray-json" % "1.3.6",
   // Scalaj HTTP
-  "org.scalaj" % "scalaj-http_2.11" % "2.4.2"
+  "org.scalaj" % "scalaj-http_2.11" % "2.4.2",
+  // Scopt
+  "com.github.scopt" %% "scopt" % "4.1.0"
 )
