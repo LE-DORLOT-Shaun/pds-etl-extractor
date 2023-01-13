@@ -75,7 +75,7 @@ object DataTransformer {
     // Transformation
     if(hour < 7) {
       hour = hour + 12
-    }else if (hour > 20) {
+    }else if (hour > 19) {
       hour = hour - 12
     }
 
