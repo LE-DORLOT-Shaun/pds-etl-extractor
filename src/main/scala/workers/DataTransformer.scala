@@ -10,7 +10,7 @@ object DataTransformer {
 
   def transformDataSilver(df : DataFrame): Boolean = {
     val df_cleaned = df
-      .withColumn("start_date", col(transformTime(col("start_date").toString())).otherwise(col("start_date")))
+      .withColumn("start_date", col(transformTime(col("start_date").cast("String").toString())).otherwise(col("start_date")))
       .withColumn("end_date", col(transformTime(col("end_date").toString())).otherwise(col("end_date")))
       .withColumn("nb_persons", col("nb_persons") * col("mult_factor").cast("Integer"))
 
