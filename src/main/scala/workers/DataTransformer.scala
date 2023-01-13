@@ -1,8 +1,11 @@
 package workers
 
+import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 
 import java.sql.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 object DataTransformer {
@@ -18,8 +21,12 @@ object DataTransformer {
       .enableHiveSupport()
       .getOrCreate()
 
+    val df_str = df
+      .withColumn("start_date", col("start_date").cast("String"))
+      .withColumn("end_date", col("end_date").cast("String"))
+
     import sparkSession.implicits._
-    val ds = df.map(row => {
+    val ds = df_str.map(row => {
       val roomId = row.getLong(0)
 
       //val start_sec = row.getTimestamp(1).getTime
@@ -29,6 +36,9 @@ object DataTransformer {
 //      val end_sec = row.getTimestamp(2).getTime
 //      val edate = new java.sql.Date(end_sec)
       var end_date = row.getString(2)
+
+      //LocalDateTime.now.format(DateTimeFormatter.ofPattern("YYYYMMdd HHmmss"))
+
 
       if (start_date != row.getString(1)) {
         end_date = transformTime(end_date)
