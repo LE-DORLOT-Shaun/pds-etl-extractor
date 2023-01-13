@@ -1,7 +1,10 @@
 package workers
 
+import org.apache.parquet.format.Util
 import org.apache.spark.sql.functions.col
-import org.apache.spark.sql.{DataFrame, SaveMode}
+import org.apache.spark.sql.types.{LongType, StringType, StructType}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode, SparkSession}
+import workers.HDFSFileManager.getSparkSession
 
 
 object DataTransformer {
@@ -9,12 +12,24 @@ object DataTransformer {
   val hdfsSilverPath : String = "hdfs://192.168.1.2:9000/silver/locaux"
 
   def transformDataSilver(df : DataFrame): Boolean = {
-    val df_cleaned = df
-      .withColumn("start_date", col(transformTime(col("start_date").cast("String").toString())).otherwise(col("start_date")))
-      .withColumn("end_date", col(transformTime(col("end_date").toString())).otherwise(col("end_date")))
-      .withColumn("nb_persons", col("nb_persons") * col("mult_factor").cast("Integer"))
 
-    df_cleaned.drop("mult_factor")
+    val sparkSession : SparkSession = getSparkSession
+
+    import sparkSession.implicits._
+    val ds = df.map(row => {
+      val roomId = row.getInt(0)
+      val start_date = transformTime(row.getString(1))
+      var end_date = row.getString(2)
+
+      if (start_date != row.getString(1)) {
+        end_date = transformTime(end_date)
+      }
+      val nb_persons = row.getInt(3) * row.getInt(4)
+
+      (roomId, start_date, end_date, nb_persons)
+    })
+
+    val df_cleaned = ds.toDF("RoomId", "start_date", "end_date", "nb_persons")
 
     df_cleaned.show(20)
 
